@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -11,15 +12,14 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(bodyParser.json());
 
-// CORS configuration to allow requests from all origins
+// CORS configuration to allow requests from any origin
 app.use(cors({
     origin: '*', // Allow requests from any origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }));
-
-// Handle pre-flight requests
-app.options('*', cors());
 
 // MongoDB connection
 const mongoURI = process.env.MONGODB_CONNECTION_STRING; // MongoDB connection string from environment variable
@@ -45,6 +45,9 @@ app.post('/submit', async (req, res) => {
         res.status(500).json({ error: 'Failed submission' });
     }
 });
+
+// Handle pre-flight requests for all routes
+app.options('*', cors());
 
 // Start the server
 app.listen(PORT, () => {
