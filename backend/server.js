@@ -35,6 +35,10 @@ const EmailSchema = new mongoose.Schema({
 const Email = mongoose.model('Email', EmailSchema);
 
 // Routes
+
+app.get('/', async (req,res)=>{
+    res.send("welcome back")
+});
 app.post('/submit', async (req, res) => {
     try {
         const { email } = req.body;
