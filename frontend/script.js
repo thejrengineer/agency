@@ -93,7 +93,7 @@ document.getElementById('email-form').addEventListener('submit', async function(
     const email = document.getElementById('email').value;
 
     try {
-        const response = await fetch('http://localhost:5000/submit', {
+        const response = await fetch('https://agencybackend.vercel.app/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
