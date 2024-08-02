@@ -13,10 +13,13 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-    origin: '*', // Allow requests from any origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
+    origin: 'https://thejuniorengineers.vercel.app', // Allow requests from your specific frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Handle pre-flight requests
+app.options('/submit', cors());
 
 // MongoDB connection
 const mongoURI = process.env.MONGODB_CONNECTION_STRING; // MongoDB connection string from environment variable
