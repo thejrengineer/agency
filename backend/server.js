@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,9 +9,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(bodyParser.json());
-
-// CORS configuration to allow requests from any origin
 app.use(cors({
     origin: '*', // Allow requests from any origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
@@ -20,6 +16,7 @@ app.use(cors({
     preflightContinue: false,
     optionsSuccessStatus: 204
 }));
+app.use(bodyParser.json()); // Parse JSON bodies
 
 // MongoDB connection
 const mongoURI = process.env.MONGODB_CONNECTION_STRING; // MongoDB connection string from environment variable
@@ -35,6 +32,11 @@ const EmailSchema = new mongoose.Schema({
 const Email = mongoose.model('Email', EmailSchema);
 
 // Routes
+
+app.get('/', async (req, res) => {
+    res.send("Welcome to backend");
+});
+
 app.post('/submit', async (req, res) => {
     try {
         const { email } = req.body;
@@ -42,7 +44,7 @@ app.post('/submit', async (req, res) => {
         await newEmail.save();
         res.status(200).json({ message: 'Thanks for connecting with us!' });
     } catch (err) {
-        res.status(500).json({ error: 'Failed submission' });
+        res.status(500).json({ error: 'Failed submission', details: err.message });
     }
 });
 
