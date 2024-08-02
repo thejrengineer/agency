@@ -11,15 +11,15 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(bodyParser.json());
 
-// CORS configuration
+// CORS configuration to allow requests from all origins
 app.use(cors({
-    origin: '*', // Allow requests from your specific frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: '*', // Allow requests from any origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
 }));
 
 // Handle pre-flight requests
-app.options('/submit', cors());
+app.options('*', cors());
 
 // MongoDB connection
 const mongoURI = process.env.MONGODB_CONNECTION_STRING; // MongoDB connection string from environment variable
