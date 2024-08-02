@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-    origin: 'https://thejuniorengineers.vercel.app', // Allow requests from your specific frontend
+    origin: '*', // Allow requests from your specific frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
