@@ -4,25 +4,19 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config(); // Load environment variables
 
-// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(bodyParser.json());
-
-// CORS configuration to allow requests from all origins
 app.use(cors({
-    origin: '*', // Allow requests from any origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Handle pre-flight requests
-app.options('*', cors());
-
 // MongoDB connection
-const mongoURI = process.env.MONGODB_CONNECTION_STRING; // MongoDB connection string from environment variable
+const mongoURI = process.env.MONGODB_CONNECTION_STRING;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
@@ -34,7 +28,24 @@ const EmailSchema = new mongoose.Schema({
 
 const Email = mongoose.model('Email', EmailSchema);
 
-// Routes
+// Default route to show an h1 element
+app.get('/', (req, res) => {
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome</title>
+        </head>
+        <body>
+            <h1>Welcome to My Express App</h1>
+        </body>
+        </html>
+    `);
+});
+
+// Other routes
 app.post('/submit', async (req, res) => {
     try {
         const { email } = req.body;
@@ -50,3 +61,5 @@ app.post('/submit', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app; // For Vercel or other serverless environments
